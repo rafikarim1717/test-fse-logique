@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -25,38 +25,44 @@ model User {
 }
 
 model CredentialCategory {
-  id        Int       @id @default(autoincrement())
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id])
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  credentials Credential[]
 }
 
 model CredentialGroup {
-  id        Int               @id @default(autoincrement())
-  parentId  Int?
-  parent    CredentialGroup?  @relation("GroupTree", fields: [parentId], references: [id])
-  children  CredentialGroup[] @relation("GroupTree")
-  userId    Int
-  user      User              @relation(fields: [userId], references: [id])
-  name      String
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  deletedAt DateTime?
+  id          Int               @id @default(autoincrement())
+  parentId    Int?
+  parent      CredentialGroup?  @relation("GroupTree", fields: [parentId], references: [id])
+  children    CredentialGroup[] @relation("GroupTree")
+  userId      Int
+  user        User              @relation(fields: [userId], references: [id])
+  name        String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  deletedAt   DateTime?
+  credentials Credential[]
 }
 
 model Credential {
-  id        Int       @id @default(autoincrement())
-  title     String
-  username  String
-  password  String
-  url       String?
-  notes     String?
-  userId    Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  user      User      @relation(fields: [userId], references: [id])
+  id         Int                @id @default(autoincrement())
+  user       User               @relation(fields: [userId], references: [id])
+  title      String
+  username   String
+  password   String
+  url        String?
+  notes      String?
+  userId     Int
+  categoryId Int
+  category   CredentialCategory @relation(fields: [categoryId], references: [id])
+  groupId    Int
+  group      CredentialGroup    @relation(fields: [groupId], references: [id])
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  deletedAt  DateTime?
 }
