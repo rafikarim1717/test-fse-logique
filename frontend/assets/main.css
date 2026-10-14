@@ -1,0 +1,9 @@
+:root {
+  --primary: #2563eb;
+  --danger: #dc2626;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --bg: #f9fafb;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: #111827; }
